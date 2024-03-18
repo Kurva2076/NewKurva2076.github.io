@@ -1,0 +1,122 @@
+html,
+body {
+    height: fit-content;
+    margin: 0;
+}
+
+body {
+    background-color: lavender;
+    display: grid;
+    grid-template-rows: auto 1fr auto;
+    font-family: Arial, serif;
+}
+
+.header {
+    grid-row: 1 / 2;
+    margin: 0;
+    width: 100%;
+    height: 170px;
+    display: block;
+    background-color: skyblue;
+}
+
+.logo {
+    float: left;
+    margin: 5px;
+    padding: 5px;
+    width: 17%;
+    max-width: 300px;
+    min-width: 150px;
+    height: 150px;
+}
+
+.title {
+    width: fit-content;
+    font-size: 3em;
+    float: right;
+    padding: 20px;
+    margin: 15px;
+}
+
+@media (max-width: 440px) {
+    .title {
+        width: 145px;
+        font-size: 180%;
+        padding: 5px;
+        margin: 5px;
+    }
+}
+
+@media (max-width: 335px) {
+    .title {
+        width: 125px;
+        font-size: 155%;
+    }
+}
+
+.content {
+    min-height: calc(100vh - 217px);
+    width: auto;
+    height: auto;
+    display: flex;
+    justify-content: center;
+}
+
+.application-form {
+    width: 50%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+    & > form {
+        width: 80%;
+        --max-form-width: 80%;
+        margin: auto;
+    }
+}
+
+.form-block-element {
+    margin-top: 10px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.form-element {
+    display: inline-block;
+    min-width: calc(var(--max-form-width) - 300px);
+
+    & > * {
+        max-width: 300px;
+        min-width: 80px;
+        width: 100%;
+    }
+}
+
+.form-text.label {
+    display: inline-block;
+    color: black;
+    width: 134px;
+    margin-right: 15px;
+}
+
+.form-text {
+    font-size: 15px;
+}
+
+.service-message {
+    display: none;
+    font-size: small;
+    color: red;
+}
+
+.footer {
+    margin-top: revert;
+    grid-row: 3 / 4;
+    font-size: large;
+    background-color: violet;
+}
+
+.footer-content {
+    margin-left: 10px;
+    padding: 10px;
+}
