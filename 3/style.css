@@ -90,6 +90,10 @@ body {
         min-width: 80px;
         width: 100%;
     }
+
+    & > textarea {
+        height: 100px;
+    }
 }
 
 .form-text.label {
