@@ -136,7 +136,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
         echo ' Успешное подключение к базе данных.';
         
         $users_stmt = $db -> prepare(
-            "INSERT INTO Users (user_id,full_name,datebirth,sex,phone_number,e_mail,biography,agreement) 
+            "INSERT INTO Users (full_name,datebirth,sex,phone_number,e_mail,biography,agreement) 
             VALUES (:full_name,:datebirth,:sex,:phone_number,:e_mail,:biography,:agreement)"
         );
         $users_stmt -> bindParam(':full_name', $_POST['fullName']);
