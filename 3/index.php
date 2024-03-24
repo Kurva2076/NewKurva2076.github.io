@@ -5,7 +5,7 @@ header('Content-Type: text/html; charset=UTF-8');
 
 if ($_SERVER['REQUEST_METHOD'] == 'GET') {
     include("form.php");
-} else if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+} elseif ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $username = 'u67319';
     $password = '6331347';
     $dbname = 'u67319';
@@ -23,6 +23,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
         while ($row = $langs_stmt -> fetch(PDO::FETCH_ASSOC)) {
             array_push($langs, $row['language_name']);
         }
+
+        unset($db);
     } catch (PDOException $e) {
         echo ' Ошибка подключения: ' . $e->getMessage();
     }
