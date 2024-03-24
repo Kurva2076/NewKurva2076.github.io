@@ -130,29 +130,51 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
 
     try {
         $db = new PDO('mysql:host=localhost;dbname=u67319', $username, $password);
-        $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-        $db->setAttribute(PDO::ATTR_PERSISTENT, true);
+        $db -> setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        $db -> setAttribute(PDO::ATTR_PERSISTENT, true);
 
         echo ' Успешное подключение к базе данных.';
+        
+        $users_stmt = $db -> prepare(
+            "INSERT INTO Users (user_id,full_name,datebirth,sex,phone_number,e_mail,biography,agreement) 
+            VALUES (:full_name,:datebirth,:sex,:phone_number,:e_mail,:biography,:agreement)"
+        );
+        $users_stmt -> bindParam(':full_name', $_POST['fullName']);
+        $users_stmt -> bindParam(':datebirth', $_POST['birth']);
+        $users_stmt -> bindParam(':sex', $_POST['sex']);
+        $users_stmt -> bindParam(':phone_number', $_POST['phoneNumber']);
+        $users_stmt -> bindParam(':e_mail', $_POST['email']);
+        $users_stmt -> bindParam(':biography', $_POST['bio']);
+        $users_stmt -> bindParam(':agreement', $_POST['agreement']);
+        $users_stmt -> execute();
+
+        $user_stmt = $db -> query(
+            "SELECT user_id FROM Users WHERE user_id = LAST_INSERT_ID()"
+        );
+        $user_id = $user_stmt -> fetch(PDO::FETCH_ASSOC)['user_id'];
+        echo $user_id;
 
         $langs = [];
         foreach ($_POST['programLanguages'] as $language)
             $langs[$language] = 0;
-         print_r($langs);
         
-        $langs_id_stmt = $db->query('SELECT * FROM Programming_Languages');
-        while ($row = $langs_id_stmt->fetch(PDO::FETCH_ASSOC)) {
-                if (isset($langs[$row['language_name']])) {
-                    echo $row['language_name'];
-                    $langs[$row['language_name']] = $row['language_id'];
-                }
+        $langs_stmt = $db -> query('SELECT * FROM Programming_Languages');
+        while ($row = $langs_stmt -> fetch(PDO::FETCH_ASSOC)) {
+            if (isset($langs[$row['language_name']])) {
+                 $langs[$row['language_name']] = $row['language_id'];
+            }
         }
 
-        print_r($langs);
-        // foreach ($_POST['programLanguages'] as $language)
-        //     $langs_id[$language] = 
-        // $get_lang_id_sql = "SELECT language_id FROM Programming_Languages WHERE language_name='';";
-        // $stmt = $db->prepare("INSERT INTO test (label,color) VALUES (:label,:color)");
+        $users_program_langs_stmt = $db -> prepare(
+            "INSERT INTO Users (user_id,language_id) VALUES (:user_id,:language_id)"
+        );
+        foreach ($langs as $language_name -> $language_id) {
+            $users_program_langs_stmt -> bindParam(':user_id', $user_id);
+            $users_program_langs_stmt -> bindParam(':language_id', $language_id);
+            $users_program_langs_stmt -> execute();
+        }
+
+        unset($db);
     } catch (PDOException $e) {
         echo ' Ошибка подключения: ' . $e->getMessage();
     }
