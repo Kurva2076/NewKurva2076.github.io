@@ -6,8 +6,6 @@ header('Content-Type: text/html; charset=UTF-8');
 if ($_SERVER['REQUEST_METHOD'] == 'GET') {
     include("form.php");
 } else if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-//    setlocale(LC_ALL, "ro_RO.UTF-8");
-
     $required_fields = [
         'fullName' => [
             'Empty' => 'ФИО',
@@ -116,20 +114,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
 
     }
 
-    ob_start();
     if ($system_message != '') {
         echo $system_message;
         exit();
     } else {
-        echo "Все поля заполнены корректно.";
+        echo "Все поля заполнены корректно. Отправляем данные на сервер...";
         print_r($_POST);
     }
-    ob_end_clean();
-
-    // $user = 'u67319';
-    // $pass = '6331347';
-    // $db = new PDO('mysql:host=localhost;dbname=u67319', $user, $pass, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-    // $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     
     $username = 'u67319';
     $password = '6331347';
@@ -137,17 +128,26 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
     $host = 'localhost';
     $dsn = 'mysql:host=' . $host . ';dbname=' . $dbname . ';charset=utf8';
 
-    ob_start();
     try {
         $db = new PDO('mysql:host=localhost;dbname=u67319', $username, $password);
         $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         $db->setAttribute(PDO::ATTR_PERSISTENT, true);
-    
-        echo 'Успешное подключение к базе данных.';
+
+        echo ' Успешное подключение к базе данных.';
+
+        $langs = [];
+        $langs_id_stmt = $db->query('SELECT * FROM Programming_Languages');
+        while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+            if (in_array($_POST['programLanguages'], $row['language_name']))
+                $langs[$row['language_id']] = $row['language_name'];
+        }
+
+        print_r($langs);
+        // foreach ($_POST['programLanguages'] as $language)
+        //     $langs_id[$language] = 
+        // $get_lang_id_sql = "SELECT language_id FROM Programming_Languages WHERE language_name='';";
+        // $stmt = $db->prepare("INSERT INTO test (label,color) VALUES (:label,:color)");
     } catch (PDOException $e) {
-        echo 'Ошибка подключения: ' . $e->getMessage();
+        echo ' Ошибка подключения: ' . $e->getMessage();
     }
-    ob_end_clean();
-
-
 }
