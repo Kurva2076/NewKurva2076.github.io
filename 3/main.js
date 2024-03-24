@@ -21,21 +21,5 @@ document.addEventListener("DOMContentLoaded", () => {
         request.onerror = function () {
             console.log(`${request.response}`)
         }
-
-        // form.reset();
     });
-
-    // const request = new XMLHttpRequest();
-    // request.onreadystatechange = function() {
-    //     if(request.readyState === 4) {
-    //         if(request.status === 200) {
-    //             console.log(request.responseText);
-    //         } else {
-    //             console.log('Error Code: ' +  request.status);
-    //             console.log('Error Message: ' + request.statusText);
-    //         }
-    //     }
-    // }
-    // request.open('GET', './index.php');
-    // request.send();
 });
