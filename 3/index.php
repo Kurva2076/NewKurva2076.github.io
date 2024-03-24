@@ -137,7 +137,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
 
         $datebirth = explode('.', $_POST['birth']);
         $datebirth = $datebirth[2] . '-' . $datebirth[1] . '-' . $datebirth[0];
-        $agreement = (strcmp($_POST['agreement'], 'on')) ? 1 : 0;
+        $agreement = (strcmp($_POST['agreement'], 'on') == 0) ? 1 : 0;
         
         $users_stmt = $db -> prepare(
             "INSERT INTO Users (full_name,datebirth,sex,phone_number,e_mail,biography,agreement) 
