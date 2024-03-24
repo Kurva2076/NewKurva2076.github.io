@@ -16,9 +16,6 @@ try {
     $rows = $lang_stmt->fetchAll(PDO::FETCH_ASSOC);
 
     unset($db);
-
-    echo "<script> alert(`$username`) </script>";
-    exit();
 } catch (PDOException $e) {
     $error_message = 'Ошибка подключения к серверу: ' . $e->getMessage();
     echo "<script> alert(`$error_message`) </script>";
@@ -28,9 +25,7 @@ try {
 ?>
 
 <!DOCTYPE html>
-
 <html lang="ru">
-
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -50,7 +45,6 @@ try {
 </head>
 
 <body>
-
 <header class="header">
     <img class="logo" src="images/logo.png" alt="Логотип" />
     <h1 class="title">Задание 3</h1>
@@ -189,7 +183,5 @@ try {
         </div>
     </footer>
 </div>
-
 </body>
-
 </html>
