@@ -111,12 +111,6 @@ body {
     font-size: 15px;
 }
 
-.service-message {
-    display: none;
-    font-size: small;
-    color: red;
-}
-
 .footer {
     margin-top: 25px;
     grid-row: 3 / 4;
