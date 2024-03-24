@@ -1,3 +1,21 @@
+<?php
+
+try {
+    $db = new PDO('mysql:host=localhost;dbname=u67319', $username, $password);
+    $db -> setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    $db -> setAttribute(PDO::ATTR_PERSISTENT, true);
+
+    $langs_stmt = $db -> query('SELECT * FROM Programming_Languages');
+
+    $rows = $langs_stmt -> fetchAll(PDO::FETCH_ASSOC);
+
+    unset($db);
+} catch (PDOException $e) {
+    echo ' Ошибка подключения: ' . $e->getMessage();
+}
+
+?>
+
 <!DOCTYPE html>
 
 <html lang="ru">
@@ -118,17 +136,11 @@
                             size="5"
                             multiple="multiple"
                     >
-                        <option value="Pascal">Pascal</option>
-                        <option value="C">C</option>
-                        <option value="C++">C++</option>
-                        <option value="JavaScript">JavaScript</option>
-                        <option value="PHP">PHP</option>
-                        <option value="Python">Python</option>
-                        <option value="Java">Java</option>
-                        <option value="Haskel">Haskel</option>
-                        <option value="Clojure">Clojure</option>
-                        <option value="Prolog">Prolog</option>
-                        <option value="Scala">Scala</option>
+                        <?php foreach ($rows as $row): ?>
+                            <option value="<?php echo $row['language_name']; ?>">
+                                <?php echo htmlspecialchars($row['language_name']); ?>
+                            </option>
+                        <?php endforeach ?>
                     </select>
                 </div>
             </div>
