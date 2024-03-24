@@ -12,7 +12,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
     $host = 'localhost';
     $dsn = 'mysql:host=' . $host . ';dbname=' . $dbname . ';charset=utf8';
 
-    $program_ls = array();
+    $program_ls = [];
 
     try {
         $db = new PDO('mysql:host=localhost;dbname=u67319', $username, $password);
@@ -21,7 +21,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
 
         $langs_stmt = $db -> query('SELECT * FROM Programming_Languages');
         while ($row = $langs_stmt -> fetch(PDO::FETCH_ASSOC)) {
-            array_push($langs, $row['language_name']);
+            array_push($program_ls, $row['language_name']);
         }
 
         unset($db);
