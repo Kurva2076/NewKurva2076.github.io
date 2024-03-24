@@ -169,10 +169,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
             }
         }
 
+        print_r($langs);
+
         $users_program_langs_stmt = $db -> prepare(
             "INSERT INTO Users (user_id,language_id) VALUES (:user_id,:language_id)"
         );
         foreach ($langs as $language_name -> $language_id) {
+            echo $language_name . " " . $language_id . " ";
             $users_program_langs_stmt -> bindParam(':user_id', $user_id);
             $users_program_langs_stmt -> bindParam(':language_id', $language_id);
             $users_program_langs_stmt -> execute();
