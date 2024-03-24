@@ -116,60 +116,38 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
 
     }
 
+    ob_start();
     if ($system_message != '') {
         echo $system_message;
-//        echo "1 " . preg_match("/[^0-9+ ]|\s$|\s\s/", $_POST['phoneNumber']) . " ";
-//        echo "2 " . preg_match("/\+{2,}/", $_POST['phoneNumber']) . " ";
-//        echo "3 " . preg_match("/\s/", $_POST['phoneNumber']) . " ";
         exit();
     } else {
         echo "Все поля заполнены корректно.";
         print_r($_POST);
     }
+    ob_end_clean();
 
-//    $host = 'localhost';
-//    $username = 'u67319';
-//    $password = '6331347';
-//    $dbname = 'u67319';
-//    $port = 3306;
-//    $charset = 'utf8mb4';
-//
-//    $mysql = new mysqli($host, $username, $password, $dbname, $port);
-//    $mysql->set_charset($charset);
-//    $mysql->options(MYSQLI_OPT_INT_AND_FLOAT_NATIVE, 1);
-//
-//    if ($mysql->connect_errno) {
-//        echo 'Ошибка подключения: ' . $mysql->connect_error;
-//        exit();
-//    }
-//
-//    echo "АЛИЛУЯ";
-
-
-    $user = 'u67319';
-    $pass = '6331347';
-    $db = new PDO('mysql:host=localhost;dbname=u67319', $user, $pass, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-    $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    // $user = 'u67319';
+    // $pass = '6331347';
+    // $db = new PDO('mysql:host=localhost;dbname=u67319', $user, $pass, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+    // $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     
-    // $username = 'u67319';
-    // $password = '6331347';
-    // $db = new PDO('mysql:host=localhost;dbname=u67319', $username, $password);
-//    $dbname = 'u67319';
-//    $host = 'localhost';
-//    $dsn = 'mysql:host=' . $host . ';port=8000;dbname=' . $dbname . ';charset=utf8';
-//    $dsn = 'mysql:host=' . $host . ';dbname=' . $dbname;
-//    echo $dsn;
+    $username = 'u67319';
+    $password = '6331347';
+    $dbname = 'u67319';
+    $host = 'localhost';
+    $dsn = 'mysql:host=' . $host . ';dbname=' . $dbname . ';charset=utf8';
 
-//    try {
-//        $db = new PDO('mysql:host=localhost;dbname=u67319', $username, $password);
-////        $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-////        $db->setAttribute(PDO::ATTR_PERSISTENT, true);
-//
-//        echo 'Успешное подключение к базе данных.';
-//    } catch (PDOException $e) {
-//        echo 'Ошибка подключения: ' . $e->getMessage();
-//    }
-//    echo $db;
+    ob_start();
+    try {
+        $db = new PDO('mysql:host=localhost;dbname=u67319', $username, $password);
+        $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        $db->setAttribute(PDO::ATTR_PERSISTENT, true);
+    
+        echo 'Успешное подключение к базе данных.';
+    } catch (PDOException $e) {
+        echo 'Ошибка подключения: ' . $e->getMessage();
+    }
+    ob_end_clean();
 
 
 }
