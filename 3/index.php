@@ -12,7 +12,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
     $host = 'localhost';
     $dsn = 'mysql:host=' . $host . ';dbname=' . $dbname . ';charset=utf8';
 
-    $program_ls = [];
+    $program_ls = array();
 
     try {
         $db = new PDO('mysql:host=localhost;dbname=u67319', $username, $password);
