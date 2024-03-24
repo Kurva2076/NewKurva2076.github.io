@@ -6,6 +6,29 @@ header('Content-Type: text/html; charset=UTF-8');
 if ($_SERVER['REQUEST_METHOD'] == 'GET') {
     include("form.php");
 } else if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    $username = 'u67319';
+    $password = '6331347';
+    $dbname = 'u67319';
+    $host = 'localhost';
+    $dsn = 'mysql:host=' . $host . ';dbname=' . $dbname . ';charset=utf8';
+
+    $program_ls = [];
+
+    try {
+        $db = new PDO('mysql:host=localhost;dbname=u67319', $username, $password);
+        $db -> setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        $db -> setAttribute(PDO::ATTR_PERSISTENT, true);
+
+        $langs_stmt = $db -> query('SELECT * FROM Programming_Languages');
+        while ($row = $langs_stmt -> fetch(PDO::FETCH_ASSOC)) {
+            array_push($langs, $row['language_name']);
+        }
+    } catch (PDOException $e) {
+        echo ' Ошибка подключения: ' . $e->getMessage();
+    }
+
+    echo $program_ls;
+    
     $required_fields = [
         'fullName' => [
             'Empty' => 'ФИО',
@@ -42,8 +65,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
             'notCorrectly' => 'Необходимо быть ознакомленным (ой) с контрактом.'
         ]
     ];
-    $program_ls = ["Pascal", "C", "C++", "JavaScript", "PHP", "Python",
-        "Java", "Haskel", "Clojure", "Prolog", "Scala"];
     $system_message = '';
 
     // Проверка полей на пустоту
@@ -121,12 +142,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
         echo "Все поля заполнены корректно. Отправляем данные на сервер...";
         print_r($_POST);
     }
-    
-    $username = 'u67319';
-    $password = '6331347';
-    $dbname = 'u67319';
-    $host = 'localhost';
-    $dsn = 'mysql:host=' . $host . ';dbname=' . $dbname . ';charset=utf8';
 
     try {
         $db = new PDO('mysql:host=localhost;dbname=u67319', $username, $password);
