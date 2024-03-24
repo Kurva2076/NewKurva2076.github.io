@@ -13,7 +13,7 @@ body {
 
 .header {
     grid-row: 1 / 2;
-    margin: 0;
+    margin: 0 0 25px 0;
     width: 100%;
     height: 170px;
     display: block;
@@ -69,9 +69,13 @@ body {
     justify-content: center;
 
     & > form {
-        width: 80%;
+        width: calc(80% + 20px);
+        padding: 5px 5px;
         --max-form-width: 80%;
         margin: auto;
+        background-color: rgba(221, 87, 238, 0.29);
+        border: 3px solid rgba(221, 87, 238, 0.6);
+        border-radius: 10px;
     }
 }
 
@@ -114,7 +118,7 @@ body {
 }
 
 .footer {
-    margin-top: revert;
+    margin-top: 25px;
     grid-row: 3 / 4;
     font-size: large;
     background-color: violet;
