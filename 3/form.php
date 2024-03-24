@@ -15,6 +15,7 @@
             integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
             crossorigin="anonymous">
     </script>
+    <script defer src="main.js"></script>
     <link rel="stylesheet" href="style.css" />
     <title>Задание 3</title>
 </head>
@@ -27,15 +28,16 @@
 </header>
 
 <div class="content">
-    <div class="application-form">
-        <form action="./index.php" method="post">
+    <div id="application-form">
+        <form id="form" action="index.php" method="post">
             <div class="form-block-element">
                 <label class="form-text label" for="fullName">
                     ФИО
                 </label>
 
                 <div class="form-element">
-                    <input id="fullName"
+                    <input class="keyboard-insertion"
+                           id="fullName"
                            name="fullName"
                            type="text"
                            placeholder="Введите ФИО"
@@ -50,7 +52,8 @@
                 </label>
 
                 <div class="form-element">
-                    <input id="phoneNumber"
+                    <input class="keyboard-insertion"
+                           id="phoneNumber"
                            name="phoneNumber"
                            type="tel"
                            placeholder="Введите номер телефона"
@@ -65,9 +68,10 @@
                 </label>
 
                 <div class="form-element">
-                    <input id="email"
+                    <input class="keyboard-insertion"
+                           id="email"
                            name="email"
-                           type="email"
+                           type="text"
                            placeholder="Введите e-mail"
                            size="30"
                     />
@@ -80,10 +84,12 @@
                 </label>
 
                 <div class="form-element">
-                    <input id="birth"
+                    <input class="keyboard-insertion"
+                           id="birth"
                            name="birth"
-                           type="date"
-                           size="30"
+                           type="text"
+                           size="20"
+                           placeholder="дд.мм.гггг"
                     />
                 </div>
             </div>
@@ -93,9 +99,9 @@
 
                 <div class="form-element">
                     <div>
-                        <input id="male" type="radio" name="sex" value="male"/>
+                        <input id="male" type="radio" name="sex" value="M" />
                         <label class="form-text" for="male">М</label>
-                        <input id="female" type="radio" name="sex" value="female"/>
+                        <input id="female" type="radio" name="sex" value="F" />
                         <label class="form-text" for="female">Ж</label>
                     </div>
                 </div>
@@ -108,7 +114,7 @@
 
                 <div class="form-element">
                     <select id="programLanguages"
-                            name="programLanguages"
+                            name="programLanguages[]"
                             size="5"
                             multiple="multiple"
                     >
@@ -140,7 +146,7 @@
             <div class="form-block-element">
                 <div class="checkFormElement">
                     <label>
-                        <input type="checkbox" name="check" />
+                        <input type="checkbox" name="agreement" />
                         <b class="form-text">С контрактом ознакомлен(а)</b>
                     </label>
                 </div>
@@ -148,7 +154,6 @@
 
             <div class="form-block-element">
                 <p><input class="sendButton" type="submit" name="save" value="Сохранить"></p>
-                <p class="form-text"><i class="service-message"></i></p>
             </div>
         </form>
     </div>
