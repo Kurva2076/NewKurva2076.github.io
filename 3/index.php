@@ -136,11 +136,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
         echo ' Успешное подключение к базе данных.';
 
         $langs = [];
+        foreach ($_POST['programLanguages'] as $language)
+            array_push($langs, $language);
+        
         $langs_id_stmt = $db->query('SELECT * FROM Programming_Languages');
         while ($row = $langs_id_stmt->fetch(PDO::FETCH_ASSOC)) {
-            foreach ($_POST['programLanguages'] as $language)
-                if (strcmp($language, $row['language_name']))
+                if (in_array($langs, $row['language_name'])) {
                     $langs[$row['language_id']] = $row['language_name'];
+                }
         }
 
         print_r($langs);
