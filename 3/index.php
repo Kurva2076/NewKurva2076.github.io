@@ -68,11 +68,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
                 $is_programLanguages_correctly = false;
 
         if (preg_match("/[^a-zа-яё ]|\s$|\s\s/ui", $_POST['fullName']) or
-            mb_strlen($_POST['fullName'], "UTF-8") > 150) {
+            strlen($_POST['fullName']) > 150) {
             $system_message = $required_fields['fullName']['notCorrectly'];
         } elseif (preg_match("/[^0-9+ ]|\s$|\s\s|\+{2,}|(?<!^)\+/", $_POST['phoneNumber']) or
             !preg_match("/\s/", $_POST['phoneNumber']) or
-            mb_strlen($_POST['phoneNumber'], "UTF-8") > 30) {
+            strlen($_POST['phoneNumber']) > 30) {
             $system_message = $required_fields['phoneNumber']['notCorrectly'];
         } elseif (!preg_match("/^[a-zA-Z0-9_\-.]+@[a-zA-Z0-9\-]+\.[a-zA-Z0-9\-.]+$/", $_POST['email'])) {
             $system_message = $required_fields['email']['notCorrectly'];
