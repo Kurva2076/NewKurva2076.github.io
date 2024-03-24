@@ -16,9 +16,6 @@ try {
     $rows = $lang_stmt -> fetchAll(PDO::FETCH_ASSOC);
     
     unset($db);
-
-    echo "<script> alert(`$username`) </script>";
-    exit();
 } catch (PDOException $e) {
     $error_message = 'Ошибка подключения к серверу: ' . $e->getMessage();
     echo "<script> alert(`$error_message`) </script>";
