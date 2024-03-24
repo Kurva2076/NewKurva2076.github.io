@@ -1,5 +1,11 @@
 <?php
 
+$username = 'u67319';
+$password = '6331347';
+$dbname = 'u67319';
+$host = 'localhost';
+$dsn = 'mysql:host=' . $host . ';dbname=' . $dbname . ';charset=utf8';
+
 try {
     $db = new PDO('mysql:host=localhost;dbname=u67319', $username, $password);
     $db -> setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
