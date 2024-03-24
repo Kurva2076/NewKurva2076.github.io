@@ -8,14 +8,17 @@ $dsn = 'mysql:host=' . $host . ';dbname=' . $dbname . ';charset=utf8';
 
 try {
     $db = new PDO($dsn, $username, $password);
-    $db -> setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-    $db -> setAttribute(PDO::ATTR_PERSISTENT, true);
+    $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    $db->setAttribute(PDO::ATTR_PERSISTENT, true);
 
-    $lang_stmt = $db -> query('SELECT * FROM Programming_Languages');
+    $lang_stmt = $db->query('SELECT * FROM Programming_Languages');
 
-    $rows = $lang_stmt -> fetchAll(PDO::FETCH_ASSOC);
-    
+    $rows = $lang_stmt->fetchAll(PDO::FETCH_ASSOC);
+
     unset($db);
+
+    echo "<script> alert(`$username`) </script>";
+    exit();
 } catch (PDOException $e) {
     $error_message = 'Ошибка подключения к серверу: ' . $e->getMessage();
     echo "<script> alert(`$error_message`) </script>";
