@@ -7,17 +7,22 @@ $host = 'localhost';
 $dsn = 'mysql:host=' . $host . ';dbname=' . $dbname . ';charset=utf8';
 
 try {
-    $db = new PDO('mysql:host=localhost;dbname=u67319', $username, $password);
+    $db = new PDO($dsn, $username, $password);
     $db -> setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     $db -> setAttribute(PDO::ATTR_PERSISTENT, true);
 
-    $langs_stmt = $db -> query('SELECT * FROM Programming_Languages');
+    $lang_stmt = $db -> query('SELECT * FROM Programming_Languages');
 
-    $rows = $langs_stmt -> fetchAll(PDO::FETCH_ASSOC);
-
+    $rows = $lang_stmt -> fetchAll(PDO::FETCH_ASSOC);
+    
     unset($db);
+
+    echo "<script> alert(`$username`) </script>";
+    exit();
 } catch (PDOException $e) {
-    echo ' Ошибка подключения: ' . $e->getMessage();
+    $error_message = 'Ошибка подключения к серверу: ' . $e->getMessage();
+    echo "<script> alert(`$error_message`) </script>";
+    exit();
 }
 
 ?>
