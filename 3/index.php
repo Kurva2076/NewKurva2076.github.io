@@ -138,10 +138,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
         $langs = [];
         foreach ($_POST['programLanguages'] as $language)
             array_push($langs, $language);
+         print_r($langs);
         
         $langs_id_stmt = $db->query('SELECT * FROM Programming_Languages');
         while ($row = $langs_id_stmt->fetch(PDO::FETCH_ASSOC)) {
                 if (in_array($langs, $row['language_name'])) {
+                    echo $row['language_name'];
                     $langs[$row['language_name']] = $row['language_id'];
                 }
         }
