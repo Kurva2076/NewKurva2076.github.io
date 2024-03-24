@@ -134,13 +134,16 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
         $db -> setAttribute(PDO::ATTR_PERSISTENT, true);
 
         echo ' Успешное подключение к базе данных.';
+
+        $datebirth = explode('.', $_POST['birth']);
+        $datebirth = $datebirth[2] . '-' . $datebirth[1] . '-' . $datebirth[0];
         
         $users_stmt = $db -> prepare(
             "INSERT INTO Users (full_name,datebirth,sex,phone_number,e_mail,biography,agreement) 
             VALUES (:full_name,:datebirth,:sex,:phone_number,:e_mail,:biography,:agreement)"
         );
         $users_stmt -> bindParam(':full_name', $_POST['fullName']);
-        $users_stmt -> bindParam(':datebirth', $_POST['birth']);
+        $users_stmt -> bindParam(':datebirth', $datebirth);
         $users_stmt -> bindParam(':sex', $_POST['sex']);
         $users_stmt -> bindParam(':phone_number', $_POST['phoneNumber']);
         $users_stmt -> bindParam(':e_mail', $_POST['email']);
