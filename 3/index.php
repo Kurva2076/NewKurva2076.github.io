@@ -29,7 +29,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
         echo ' Ошибка подключения: ' . $e->getMessage();
     }
 
-    echo $program_ls;
+    print_r($program_ls);
     
     $required_fields = [
         'fullName' => [
