@@ -137,6 +137,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
 
         $datebirth = explode('.', $_POST['birth']);
         $datebirth = $datebirth[2] . '-' . $datebirth[1] . '-' . $datebirth[0];
+        $agreement = (strcom($_POST['agreement'], 'on')) ? true : false;
         
         $users_stmt = $db -> prepare(
             "INSERT INTO Users (full_name,datebirth,sex,phone_number,e_mail,biography,agreement) 
@@ -148,7 +149,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
         $users_stmt -> bindParam(':phone_number', $_POST['phoneNumber']);
         $users_stmt -> bindParam(':e_mail', $_POST['email']);
         $users_stmt -> bindParam(':biography', $_POST['bio']);
-        $users_stmt -> bindParam(':agreement', $_POST['agreement']);
+        $users_stmt -> bindParam(':agreement', $agreement);
         $users_stmt -> execute();
 
         $user_stmt = $db -> query(
