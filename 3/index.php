@@ -146,9 +146,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
 //    echo "АЛИЛУЯ";
 
 
-    $username = 'u67319';
-    $password = '6331347';
-    $db = new PDO('mysql:host=localhost;dbname=u67319', $username, $password);
+    $user = 'u67319';
+    $pass = '6331347';
+    $db = new PDO('mysql:host=localhost;dbname=u67319', $user, $pass, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+    $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    
+    // $username = 'u67319';
+    // $password = '6331347';
+    // $db = new PDO('mysql:host=localhost;dbname=u67319', $username, $password);
 //    $dbname = 'u67319';
 //    $host = 'localhost';
 //    $dsn = 'mysql:host=' . $host . ';port=8000;dbname=' . $dbname . ';charset=utf8';
