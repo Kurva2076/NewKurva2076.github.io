@@ -1,8 +1,11 @@
 <?php
 
-$username = 'u67319';
-$password = '6331347';
-$dbname = 'u67319';
+global $my_username, $my_password, $my_dbname;
+include "authentication.php";
+
+$username = $my_username;
+$password = $my_password;
+$dbname = $my_dbname;
 $host = 'localhost';
 $dsn = 'mysql:host=' . $host . ';dbname=' . $dbname . ';charset=utf8';
 
