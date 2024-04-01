@@ -5,9 +5,9 @@ header('Content-Type: text/html; charset=UTF-8');
 if ($_SERVER['REQUEST_METHOD'] == 'GET') {
     include("form.php");
 } elseif ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $username = 'u67319';
-    $password = '6331347';
-    $dbname = 'u67319';
+    $username = '*******';
+    $password = '***';
+    $dbname = '*****';
     $host = 'localhost';
     $dsn = 'mysql:host=' . $host . ';dbname=' . $dbname . ';charset=utf8';
 
