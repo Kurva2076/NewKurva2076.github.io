@@ -1,0 +1,31 @@
+.content {
+    min-height: calc(100vh - 267px);
+    width: auto;
+    height: auto;
+    display: flex;
+    justify-content: center;
+}
+
+.authentication-form {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+    & > form {
+        padding: 0 10px;
+        background-color: rgba(221, 87, 238, 0.29);
+        border: 3px solid rgba(221, 87, 238, 0.6);
+        border-radius: 10px;
+    }
+}
+
+.login-block, .password-block, .send-block {
+    width: fit-content;
+    margin: 15px auto;
+}
+
+.send-block > button {
+    background-color: rgb(229 231 246);
+    border: rgb(189 35 41) solid 2px;
+    border-radius: 25px;
+}

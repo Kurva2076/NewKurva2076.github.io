@@ -1,0 +1,85 @@
+.content {
+    min-height: calc(100vh - 267px);
+    width: auto;
+    height: auto;
+    display: flex;
+    justify-content: center;
+}
+
+#application-form {
+    width: 50%;
+    display: grid;
+    grid-template-columns: 1fr;
+    align-items: center;
+
+    & > form {
+        min-width: 250px;
+        width: calc(80% + 20px);
+        padding: 5px 5px;
+        --max-form-width: 80%;
+        margin: auto;
+        background-color: rgba(221, 87, 238, 0.29);
+        border: 3px solid rgba(221, 87, 238, 0.6);
+        border-radius: 10px;
+    }
+
+    & > .messages {
+        display: block;
+        /*width: max-content;*/
+        height: 535px;
+        margin: 0 10px;
+        padding: 7px 0;
+    }
+}
+
+.message {
+    min-height: 28px;
+    min-width: 200px;
+    /*width: inherit;*/
+    margin-top: 12px;
+    padding: 0 3px;
+    font-size: 15px;
+    border: 1px solid rgba(225,84,84,0.8);
+    background-color: rgba(51, 147, 217, 0.53);
+}
+
+.form-block-element {
+    margin-top: 10px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.form-element {
+    display: inline-block;
+    min-width: calc(var(--max-form-width) - 300px);
+
+    & > * {
+        max-width: 300px;
+        min-width: 80px;
+        width: 100%;
+    }
+
+    & > textarea {
+        height: 100px;
+        resize: none;
+    }
+}
+
+.error {
+    outline: 3px auto rgba(234, 17, 17, 0.8);
+}
+
+.form-text.label {
+    display: inline-block;
+    color: black;
+    width: 134px;
+    margin-right: 15px;
+}
+
+.form-text {
+    font-size: 15px;
+
+    &.agreement {
+        font-size: 12px;
+    }
+}

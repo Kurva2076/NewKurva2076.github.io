@@ -1,0 +1,29 @@
+.content {
+    min-height: calc(100vh - 267px);
+    width: auto;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+    & .action-buttons > * {
+        font-size: calc(min(2.5em, 2.5vw));
+    }
+}
+
+.action-buttons {
+    display: flex;
+    justify-content: center;
+
+    & > * {
+        width: 25vw;
+        margin: 0 10vw;
+
+        & > button {
+            background-color: rgba(103, 110, 255, 0.1);
+            border: 3px solid rgba(218, 74, 212, 0.69);
+            border-radius: 20px;
+            padding: 5px;
+        }
+    }
+}
