@@ -35,11 +35,11 @@ $task_url = substr($task_url, 0, strripos($task_url, '/'));
     <form action="<?php print $task_url . '/index.php' ?>" method="post">
         <div class="action-buttons">
             <div class="edit-old-form">
-                <button type="submit" name="sendButton" value="edit">Изменить данные в старой форме</button>
+                <button type="submit" name="rerouteButton" value="edit">Изменить данные в старой форме</button>
             </div>
 
             <div class="send-new-form">
-                <button type="submit" name="sendButton" value="send">Отправить новую форму</button>
+                <button type="submit" name="rerouteButton" value="send">Отправить новую форму</button>
             </div>
         </div>
     </form>

@@ -13,9 +13,7 @@ try {
     $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     $db->setAttribute(PDO::ATTR_PERSISTENT, true);
 
-    $lang_stmt = $db->query('SELECT * FROM Programming_Languages');
-
-    $rows = $lang_stmt->fetchAll(PDO::FETCH_ASSOC);
+    $rows = $db->query('SELECT * FROM Programming_Languages')->fetchAll(PDO::FETCH_ASSOC);
 
     unset($db);
 } catch (PDOException $e) {
@@ -26,6 +24,109 @@ try {
 
 $task_url = ((!empty($_SERVER['HTTPS'])) ? 'https' : 'http') . '://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
 $task_url = substr($task_url, 0, strripos($task_url, '/'));
+
+if (!empty($_COOKIE['PHPSESSID'])) {
+    session_start();
+}
+
+$messages = [
+    'fullName' => '',
+    'phoneNumber' => '',
+    'email' => '',
+    'birth' => '',
+    'sex' => '',
+    'programLanguages' => '',
+    'bio' => '',
+    'agreement' => ''
+];
+$errors = [false];
+$values = [
+    'fullName' => '',
+    'phoneNumber' => '',
+    'email' => '',
+    'birth' => '',
+    'sex' => '',
+    'programLanguages' => [],
+    'bio' => '',
+    'agreement' => ''
+];
+
+if (!empty($_SESSION['user_id'])) {
+    if (empty($_COOKIE['sys_messages']) and empty($_COOKIE['save'])) {
+        global $user_info;
+
+        try {
+            $db = new PDO($dsn, $my_username, $my_password);
+            $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+            $db->setAttribute(PDO::ATTR_PERSISTENT, true);
+
+            $lang_stm = $db->query(
+                'SELECT language_name FROM Users_Programming_Languages LEFT JOIN (Programming_Languages) ' .
+                'ON (Users_Programming_Languages.language_id = Programming_Languages.language_id) ' .
+                'WHERE user_id=' . $_SESSION['user_id'] . ';'
+            )->fetchAll(PDO::FETCH_ASSOC);
+            for ($i = 0; $i < sizeof($lang_stm); $i++)
+                $values['programLanguages'][] = $lang_stm[$i]['language_name'];
+
+            $user_stm = $db->query(
+                'SELECT * FROM Users WHERE user_id=' . $_SESSION['user_id'] . ';'
+            )->fetchAll(PDO::FETCH_ASSOC);
+
+            if (sizeof($user_stm) != 1) {
+                unset($db);
+                echo "<script> alert(`Произошла неизвестная ошибка при авторизации.`); </script>";
+                exit();
+            }
+
+            $user_info = $user_stm[0];
+
+            unset($db);
+        } catch (PDOException $e) {
+            $error_message = 'Ошибка подключения к серверу: ' . $e->getMessage();
+            echo "<script> alert(`$error_message`); </script>";
+            exit();
+        }
+
+        foreach ($values as $name => $value)
+            foreach ($user_info as $col_name => $bd_value)
+                if (strcasecmp($name, str_replace('_', '', $col_name)) == 0) {
+                    if (strcmp($name, 'birth') == 0) {
+                        $birth_value = array_map('intval', explode('-', $bd_value));
+                        $values[$name] = $birth_value[2] . '.' . $birth_value[1] . '.' . $birth_value[0];
+                    } else
+                        $values[$name] = (strcmp($name, 'agreement') != 0) ? $bd_value : (
+                        ($bd_value == 1) ? 'on' : 'off'
+                        );
+                }
+    } else {
+        foreach ($_SESSION['values'] as $name => $value)
+            if (array_key_exists($name, $values)) {
+                $values[$name] = (strcmp($name, 'programLanguages') == 0) ? json_decode($value) : $value;
+            }
+
+        if (!empty($_COOKIE['save']))
+            unset($_SESSION['values']);
+    }
+} elseif (!empty($_COOKIE['values'])) {
+    foreach ($_COOKIE['values'] as $name => $value)
+        if (array_key_exists($name, $values))
+            $values[$name] = (strcmp($name, 'programLanguages') == 0) ? json_decode($value) : $value;
+}
+
+if (!empty($_COOKIE['save'])) {
+    setcookie('save', '', time() - 3600, '/');
+    $messages[] = "Всё успешно сохранено.";
+}
+
+if (!empty($_COOKIE['sys_messages'])) {
+    $errors[0] = true;
+    foreach ($_COOKIE['sys_messages'] as $name => $error_message) {
+        if (array_key_exists($name, $values)) {
+            $errors[] = $name;
+            $messages[$name] = $error_message;
+        }
+    }
+}
 
 ?>
 
@@ -46,7 +147,7 @@ $task_url = substr($task_url, 0, strripos($task_url, '/'));
     </script>
     <link rel="stylesheet" href="<?php print $task_url . '/main_style.css' ?>" />
     <link rel="stylesheet" href="<?php print $task_url . '/form_style.css' ?>" />
-    <title>Задание 5</title>
+    <title>Форма</title>
 </head>
 
 <body>
@@ -57,11 +158,28 @@ $task_url = substr($task_url, 0, strripos($task_url, '/'));
 
 <div class="content">
     <div id="application-form" <?php
-    global $messages, $errors, $values;
     if ($errors[0]) print("style='grid-template-columns: 1fr 1fr'");
     ?>
     >
         <form id="form" action="<?php print $task_url . '/index.php' ?>" method="post">
+            <div class="form-block-element system-message">
+                <?php
+
+                if (!empty($_SESSION['user_id'])) {
+                    print('<p style="color: #221257">Вход с логином ' . $_SESSION['login'] .
+                        ', id ' . $_SESSION['user_id'] . '</p>');
+                } elseif (!empty($_SESSION['password']) and !empty($messages[0])) {
+                    print('<p style="color: #221257">Для редактирования формы воспользуйтесь логином - '
+                        . $_SESSION['login'] . ', паролем - ' . $_SESSION['password'] . '</p>');
+
+                    setcookie('PHPSESSID', '', time() - 3600, '/');
+                    session_unset();
+                    session_abort();
+                }
+
+                ?>
+            </div>
+
             <div class="form-block-element">
                 <label class="form-text label" for="fullName">
                     ФИО
@@ -225,12 +343,12 @@ $task_url = substr($task_url, 0, strripos($task_url, '/'));
                 </div>
             </div>
 
-            <div class="form-block-element">
-                <p><input class="sendButton" type="submit" name="sendButton" value="save"></p>
+            <div class="form-block-element send-button">
+                <p><input class="rerouteButton" type="submit" name="rerouteButton" value="Сохранить"></p>
                 <?php
 
-                if (!$errors[0] && sizeof($messages) == 1)
-                    print('<p style="color: #221257">' . $messages[0] . '</p>');
+                if (!$errors[0] && !empty($messages[0]))
+                    print('<p style="color: #221257; padding: 14px 0 0 25px;">' . $messages[0] . '</p>');
 
                 ?>
             </div>
@@ -248,14 +366,24 @@ $task_url = substr($task_url, 0, strripos($task_url, '/'));
                 if (array_key_exists($name, $messages))
                     $error_message = $messages[$name];
 
-                print('<div class="message ' . $name . '" style="' . $style . ((strcmp($error_message, '') != 0) ? '"'
-                        : ' visibility: hidden;"') . '>' . htmlspecialchars($error_message) . '</div>');
+                print('<div class="message ' . $name . '" style="' . $style .
+                    ((strcmp($error_message, '') != 0) ? '"' : ' visibility: hidden;"') . '>' .
+                    htmlspecialchars($error_message) . '</div>');
             }
 
             print('</div>');
         }
 
         ?>
+
+        <form id="back" action="<?php print $task_url . '/index.php' ?>" method="post">
+            <button type="submit"
+                    name="rerouteButton"
+                    value="<?php print (!empty($_SESSION['user_id'])) ? 'sign_out' : 'welcome_page'; ?>"
+            >
+                <?php print (!empty($_SESSION['user_id'])) ? 'Выйти из аккаунта' : 'Перейти на главную страницу'; ?>
+            </button>
+        </form>
     </div>
 </div>
 

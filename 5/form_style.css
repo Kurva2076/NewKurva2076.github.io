@@ -12,7 +12,7 @@
     grid-template-columns: 1fr;
     align-items: center;
 
-    & > form {
+    & > #form {
         min-width: 250px;
         width: calc(80% + 20px);
         padding: 5px 5px;
@@ -25,7 +25,6 @@
 
     & > .messages {
         display: block;
-        /*width: max-content;*/
         height: 535px;
         margin: 0 10px;
         padding: 7px 0;
@@ -35,7 +34,6 @@
 .message {
     min-height: 28px;
     min-width: 200px;
-    /*width: inherit;*/
     margin-top: 12px;
     padding: 0 3px;
     font-size: 15px;
@@ -47,6 +45,21 @@
     margin-top: 10px;
     display: flex;
     justify-content: space-between;
+
+    &.system-message, &.send-button {
+        justify-content: center;
+
+        & > p {
+            text-align: center;
+        }
+    }
+
+    &.send-button > p > .rerouteButton {
+        background-color: rgb(229 231 246);
+        border: rgb(189 35 41) solid 2px;
+        border-radius: 25px;
+        padding: 10px;
+    }
 }
 
 .form-element {
@@ -81,5 +94,16 @@
 
     &.agreement {
         font-size: 12px;
+    }
+}
+
+#back {
+    margin: 10px auto;
+
+    & > button {
+        background-color: rgba(103, 110, 255, 0.1);
+        border: 3px solid rgba(218, 74, 212, 0.69);
+        border-radius: 30px;
+        padding: 5px;
     }
 }
