@@ -38,7 +38,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
         strcmp($_POST['rerouteButton'], 'send') == 0 or
         strcmp($_POST['rerouteButton'], 'sign_out') == 0 or
         strcmp($_POST['rerouteButton'], 'welcome_page') == 0) {
-        if (!empty($_COOKIE['sys_messages']))
+        if (!empty($_COOKIE['sys_messages']) and (strcmp($_POST['rerouteButton'], 'sign_out') == 0 or
+                strcmp($_POST['rerouteButton'], 'edit') == 0))
             foreach ($_COOKIE['sys_messages'] as $name => $message)
                 setcookie('sys_messages[' . $name . ']', 0, time() - 3600, '/');
 
