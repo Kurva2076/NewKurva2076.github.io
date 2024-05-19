@@ -38,13 +38,16 @@
     color: #dc2a2a;
 }
 
-#back {
-    margin: 20px auto;
+.back-button {
+    margin: 10px auto;
+    padding: 10px;
 
-    & > button {
+    & > a {
+        padding: 10px;
         background-color: rgba(103, 110, 255, 0.1);
         border: 3px solid rgba(218, 74, 212, 0.69);
         border-radius: 30px;
-        padding: 5px;
+        color: #201b79;
+        text-decoration: none;
     }
 }

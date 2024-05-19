@@ -1,14 +1,35 @@
 <?php
 
-if (!empty($_COOKIE['PHPSESSID'])) {
-    session_start();
+session_start();
+
+if (!empty($_GET['back']) or !empty($_SESSION['admin_id'])) {
+    $page_name = 'authorization.php';
+    $sign_out_path = getcwd() . '/sign_out.php';
+    $_GET['back'] = '1';
+    require $sign_out_path;
+}
+
+if (!empty($_COOKIE['rerouteButton']))
+    setcookie('rerouteButton', '', time() - 3600);
+
+if (!empty($_SERVER['PHP_AUTH_USER']) or !empty($_SERVER['PHP_AUTH_PW'])) {
+    if (file_exists(getcwd() . '/log_out.php')) {
+        header('Location: ' . substr(
+                $_SERVER['REQUEST_URI'], 0, strripos($_SERVER['REQUEST_URI'], '/')
+            ) . '/log_out.php?page_name=authorization.php');
+    } else {
+        print('<h1 style="width: fit-content; margin: 50px auto">Произошла ошибка маршрутизации</h1>');
+        exit();
+    }
 }
 
 $task_url = ((!empty($_SERVER['HTTPS'])) ? 'https' : 'http') . '://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
 $task_url = substr($task_url, 0, strripos($task_url, '/'));
 
-$message = (!empty($_COOKIE['sys_messages']['authorization'])) ? $_COOKIE['sys_messages']['authorization'] : '';
-$login_value = (!empty($_COOKIE['PHPSESSID']) and !empty($_SESSION['login'])) ? $_SESSION['login'] : '';
+$message = (!empty($_COOKIE['sys_messages']['authorization']) and empty($_GET['back'])) ?
+    $_COOKIE['sys_messages']['authorization'] : '';
+$login_value = (!empty($_COOKIE[session_name()]) and !empty($_SESSION['login']) and empty($_GET['back'])) ?
+    $_SESSION['login'] : '';
 
 ?>
 
@@ -47,7 +68,7 @@ $login_value = (!empty($_COOKIE['PHPSESSID']) and !empty($_SESSION['login'])) ? 
                            name="login"
                            placeholder="Логин"
                            size="30"
-                           value="<?php print($login_value); ?>"
+                           value="<?php print($login_value) ?>"
                     />
                 </label>
             </div>
@@ -74,9 +95,9 @@ $login_value = (!empty($_COOKIE['PHPSESSID']) and !empty($_SESSION['login'])) ? 
             </div>
         </form>
 
-        <form id="back" action="<?php print $task_url . '/index.php' ?>" method="post">
-            <button type="submit" name="rerouteButton" value="welcome_page">Перейти на главную страницу</button>
-        </form>
+        <div class="back-button">
+            <a href="<?php print $task_url . '/welcome.php?back=1' ?>"><b>Перейти на главную страницу</b></a>
+        </div>
     </div>
 </div>
 

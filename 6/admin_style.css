@@ -1,0 +1,207 @@
+.content {
+    min-height: calc(100vh - 267px);
+    width: auto;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+    & > section {
+        margin: 10px 30px 40px 30px;
+
+        &.table-section {
+            border-bottom: #201b79 5px solid;
+        }
+    }
+}
+
+.program-langs-statistic-table {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    & > .wrapper {
+        margin-bottom: 30px;
+        opacity: 0;
+        transition: opacity 1s;
+        max-width: 1000px;
+        width: fit-content;
+    }
+}
+
+.show-table-button {
+    margin: 20px 0;
+
+    & > button {
+        color: #201b79;
+        background-color: rgba(103, 110, 255, 0.1);
+        border: 3px solid rgba(218, 74, 212, 0.69);
+        border-radius: 30px;
+        padding: 10px;
+    }
+}
+
+.cnt-users-block {
+    margin-bottom: 20px;
+
+    & > h3 {
+        width: fit-content;
+        margin-inline: auto;
+        color: #0c0a3f;
+    }
+}
+
+.appearance-management {
+    display: flex;
+    justify-content: space-around;
+    vertical-align: middle;
+    margin-bottom: 45px;
+}
+
+.cnt-users-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    width: fit-content;
+
+    & > button,
+    & > button:hover {
+        margin: 5px;
+        width: 50px;
+        height: 50px;
+        color: #ff0080;
+        background-color: rgba(221, 25, 150, 0.1);
+        border: 3px solid rgba(218, 74, 196, 0.69);
+        border-radius: 30px;
+        transition: opacity 500ms;
+    }
+
+    & > button {
+        opacity: 0.5;
+    }
+
+    & > button:hover {
+        opacity: 1;
+    }
+}
+
+.pagination {
+    min-height: 50px;
+    max-height: 240px;
+    vertical-align: middle;
+    justify-content: center;
+    align-items: center;
+
+    & > button {
+        border: none;
+        background-color: transparent;
+        color: #221257;
+        text-decoration: underline;
+        margin-inline: 10px;
+        width: 30px;
+        height: 30px;
+    }
+}
+
+.find-user-block {
+    min-height: 50px;
+    max-height: 240px;
+    display: flex;
+    vertical-align: middle;
+    justify-content: center;
+    align-items: center;
+
+    & > .find-button {
+        color: #63307f;
+        background-color: rgba(129, 85, 241, 0.16);
+        border: 2px solid rgba(190, 140, 250, 0.69);
+        border-left-width: 1px;
+        border-bottom-right-radius: 10px;
+        border-top-right-radius: 10px;
+    }
+
+    & input {
+        border: 2px solid rgba(190, 140, 250, 0.69);
+        border-right-width: 1px;
+        border-bottom-left-radius: 10px;
+        border-top-left-radius: 10px;
+
+        &:focus {
+            outline: none;
+        }
+    }
+
+    & input,
+    & .find-button {
+        padding: 10px;
+    }
+}
+
+.users-info-block {
+    margin: auto;
+    overflow-x: auto;
+    width: calc(100vmax - 77px);
+}
+
+.table.table-bordered {
+    border-color: cornflowerblue !important;
+    width: 100%;
+    margin: 0;
+
+    & th {
+        padding: 8px 3px;
+        text-align: center;
+        vertical-align: middle;
+    }
+
+    & tr.table-name-row > th {
+        background-color: #a3d7ff !important;
+    }
+}
+
+.delete-cell, .edit-cell {
+    padding: 0 !important;
+    background-color: transparent !important;
+
+    & > .delete-button,
+    & > .edit-button {
+        display: block;
+        width: 100%;
+        height: 100%;
+
+        & > a {
+            display: block;
+            padding-block: 4em;
+            width: 100%;
+            height: 100%;
+            color: #201b79;
+            text-decoration: none;
+            vertical-align: middle;
+            text-align: center;
+        }
+    }
+
+    & > .delete-button {
+        background-color: rgba(217, 147, 174, 0.69);
+    }
+
+    & > .edit-button {
+        background-color: rgba(163, 219, 131, 0.81);
+    }
+}
+
+.back-button {
+    width: fit-content;
+    margin: 10px auto;
+    padding: 10px;
+
+    & > a {
+        text-decoration: none;
+        color: #201b79;
+        background-color: rgba(103, 110, 255, 0.1);
+        border: 3px solid rgba(218, 74, 212, 0.69);
+        border-radius: 30px;
+        padding: 10px;
+    }
+}

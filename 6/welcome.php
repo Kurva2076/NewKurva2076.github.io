@@ -1,6 +1,21 @@
 <?php
 
-print_r($_SERVER);
+if (!empty($_COOKIE[session_name()])) {
+    $page_name = 'welcome.php';
+    $sign_out_path = getcwd() . '/sign_out.php';
+    require $sign_out_path;
+}
+
+if (!empty($_SERVER['PHP_AUTH_USER']) or !empty($_SERVER['PHP_AUTH_PW'])) {
+    if (file_exists(getcwd() . '/log_out.php')) {
+        header('Location: ' . substr(
+                $_SERVER['REQUEST_URI'], 0, strripos($_SERVER['REQUEST_URI'], '/')
+            ) . '/log_out.php?page_name=welcome.php');
+    } else {
+        print('<h1 style="width: fit-content; margin: 50px auto">Произошла ошибка маршрутизации</h1>');
+        exit();
+    }
+}
 
 $task_url = ((!empty($_SERVER['HTTPS'])) ? 'https' : 'http') . '://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
 $task_url = substr($task_url, 0, strripos($task_url, '/'));
@@ -37,15 +52,21 @@ $task_url = substr($task_url, 0, strripos($task_url, '/'));
     <form action="<?php print $task_url . '/index.php' ?>" method="post">
         <div class="action-buttons">
             <div class="send-new-form">
-                <button type="submit" name="rerouteButton" value="send">Отправить новую форму</button>
+                <div class="wrapper">
+                    <a href="<?php print $task_url . '/form.php' ?>">Отправить новую форму</a>
+                </div>
             </div>
 
             <div class="edit-old-form">
-                <button type="submit" name="rerouteButton" value="edit">Изменить данные в старой форме</button>
+                <div class="wrapper">
+                    <a href="<?php print $task_url . '/authorization.php' ?>">Изменить данные в старой форме</a>
+                </div>
             </div>
 
             <div class="admin-block">
-                <button type="submit" name="rerouteButton" value="admin">Войти в систему под админом</button>
+                <div class="wrapper">
+                    <a href="<?php print $task_url . '/admin.php' ?>">Войти в систему под админом</a>
+                </div>
             </div>
         </div>
     </form>
