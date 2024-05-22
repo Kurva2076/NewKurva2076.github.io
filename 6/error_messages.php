@@ -61,8 +61,7 @@ if (strcmp($purpose, 'form') == 0) {
     if (!empty($_SESSION['admin_id'])) {
         $error_messages['userID'] = [
             400 => 'Введите ID пользователя.',
-            403 => 'ID может содержать только цифры.',
-            418 => 'ID должно быть больше 0.'
+            403 => 'ID может содержать только цифры.'
         ];
     }
 } elseif (strcmp($purpose, 'authorization') == 0) {

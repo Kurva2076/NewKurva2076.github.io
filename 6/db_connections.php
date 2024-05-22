@@ -55,9 +55,9 @@ function DBConnect ($action, $user_id = '', $login = '', $pass = '') : array | b
         }
     } catch (PDOException $e) {
         unset($db);
-        $error_message = 'Ошибка подключения к серверу: ' . $e->getMessage();
+        $error_message = 'Ошибка подключения к серверу, попробуйте выполнить запрос снова.';
+        $error_message = htmlspecialchars($error_message, ENT_QUOTES, 'UTF-8');
         echo "<script> alert(`$error_message`); </script>";
-        return false;
     }
 
     return true;
@@ -130,7 +130,7 @@ function AdminDataVerification ($database, $login, $password) : int
 
     if (empty($admin_info)) {
         return 0;
-    } elseif (hash('sha512', $password) !== $admin_info['admin_password']) {
+    } elseif (!hash_equals(hash('sha512', $password), $admin_info['admin_password'])) {
         return 0;
     } else {
         return $admin_info['admin_id'];

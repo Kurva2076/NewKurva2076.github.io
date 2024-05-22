@@ -203,5 +203,9 @@
         border: 3px solid rgba(218, 74, 212, 0.69);
         border-radius: 30px;
         padding: 10px;
+
+        & > img {
+            height: 20px;
+        }
     }
 }

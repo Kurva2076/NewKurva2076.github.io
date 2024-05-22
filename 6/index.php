@@ -6,10 +6,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
     $task_url = substr($_SERVER['REQUEST_URI'], 0, strripos($_SERVER['REQUEST_URI'], '/'));
 
     if (!empty($_COOKIE['rerouteButton'])) {
-        $page_name = (strcmp($_COOKIE['rerouteButton'], 'sign_in') == 0 or
-            strcmp($_COOKIE['rerouteButton'], 'Сохранить') == 0) ? 'form.php' : (
-            (strcmp($_COOKIE['rerouteButton'], 'edit') == 0) ? 'authorization.php' : ''
-        );
+        $page_name = ($_COOKIE['rerouteButton'] === 'sign_in' or $_COOKIE['rerouteButton'] === 'Сохранить') ?
+            'form.php' : ($_COOKIE['rerouteButton'] === 'edit' ? 'authorization.php' : '');
 
         if (!empty($page_name) and file_exists(getcwd() . '/' . $page_name)) {
             header('Location: ' . $task_url . '/' . $page_name);
@@ -23,8 +21,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
         setcookie('rerouteButton', '', time() - 3600);
         header('Location: ' . $task_url . '/welcome.php');
     }
-} elseif ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    if (strcmp($_POST['rerouteButton'], 'sign_in') == 0) {
+} elseif ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    if ($_POST['rerouteButton'] === 'sign_in') {
         session_start();
 
         global $error_messages;
@@ -42,7 +40,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
             setcookie('sys_messages[authorization]', $system_message, 0, '/');
             setcookie('rerouteButton', 'edit');
         }
-    } elseif (strcmp($_POST['rerouteButton'], 'Сохранить') == 0) {
+    } elseif ($_POST['rerouteButton'] === 'Сохранить') {
         session_start();
 
         UseDB();
@@ -67,7 +65,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
             }
 
         foreach ($_POST as $name => $value)
-            if (strcmp($name, 'rerouteButton') != 0) {
+            if ($name !== 'rerouteButton') {
                 setcookie('sys_messages[' . $name . ']', '', time() - 3600, '/');
 
                 if (empty($_SESSION['user_id'])) {
@@ -84,11 +82,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
             $log = GenerateLogin();
             $pass = GeneratePassword();
 
-            if (!DBConnect('InsertUpdateUserInfo Insert', $login = $log, $password = $pass)) {
+            if (!DBConnect('InsertUpdateUserInfo Insert', login: $log, pass: $pass)) {
                 exit();
             }
 
-            $_SESSION['login'] = $login;
+            $_SESSION['login'] = $log;
             $_SESSION['password'] = $pass;
         } elseif (!empty($_SESSION['login']) or !empty($_SESSION['admin_id'])) {
             if (!DBConnect('InsertUpdateUserInfo Update')) {
@@ -108,14 +106,17 @@ function GetFormSystemMessages (array $error_messages, array $program_ls) : arra
 
     foreach ($error_messages as $name => $messages) {
         if (empty($_POST[$name])) {
+            if (!empty($_SESSION['admin_id']) and $name === 'agreement') {
+                $_POST['agreement'] = 'on';
+                continue;
+            }
+
             $system_messages[$name] = $messages[400];
         } else {
-            if (strcmp($name, 'userID') == 0) {
+            if ($name === 'userID') {
                 if (preg_match("/[^0-9]/ui", $_POST[$name]))
                     $system_messages[$name] = $messages[403];
-                elseif (strcmp($_POST[$name], '0') == 0)
-                    $system_messages[$name] = $messages[418];
-            } elseif (strcmp($name, 'fullName') == 0) {
+            } elseif ($name === 'fullName') {
                 if (strlen($_POST[$name]) > 150)
                     $system_messages[$name] = $messages[401];
                 elseif (preg_match("/[^a-zа-яё ]/ui", $_POST[$name]))
@@ -124,7 +125,7 @@ function GetFormSystemMessages (array $error_messages, array $program_ls) : arra
                     $system_messages[$name] = $messages[405];
                 elseif (preg_match("/\s\s/", $_POST[$name]))
                     $system_messages[$name] = $messages[411];
-            } elseif (strcmp($name, 'phoneNumber') == 0) {
+            } elseif ($name === 'phoneNumber') {
                 if (strlen($_POST[$name]) > 30)
                     $system_messages[$name] = $messages[401];
                 elseif (preg_match("/[^0-9+ ]/", $_POST[$name]))
@@ -139,7 +140,7 @@ function GetFormSystemMessages (array $error_messages, array $program_ls) : arra
                     $system_messages[$name] = $messages[411];
                 elseif (preg_match("/(?<!^)\+/", $_POST[$name]))
                     $system_messages[$name] = $messages[412];
-            } elseif (strcmp($name, 'email') == 0) {
+            } elseif ($name === 'email') {
                 if (strlen($_POST[$name]) > 150)
                     $system_messages[$name] = $messages[401];
                 elseif (!preg_match("/^.*@.*\..*$/", $_POST[$name]))
@@ -156,7 +157,7 @@ function GetFormSystemMessages (array $error_messages, array $program_ls) : arra
                     $system_messages[$name] = $messages[416];
                 elseif (preg_match("/\.$/", $_POST[$name]))
                     $system_messages[$name] = $messages[417];
-            } elseif (strcmp($name, 'birth') == 0) {
+            } elseif ($name === 'birth') {
                 if (preg_match("/[^0-9.]/", $_POST[$name]))
                     $system_messages[$name] = $messages[403];
                 elseif (!preg_match("/^[0-9]{1,2}\.[0-9]{1,2}\.[0-9]+$/", $_POST[$name]))
@@ -182,10 +183,10 @@ function GetFormSystemMessages (array $error_messages, array $program_ls) : arra
                         }
                     }
                 }
-            } elseif (strcmp($name, 'sex') == 0) {
+            } elseif ($name === 'sex') {
                 if (!preg_match("/^[MF]$/", $_POST[$name]))
                     $system_messages[$name] = $messages[410];
-            } elseif (strcmp($name, 'programLanguages') == 0) {
+            } elseif ($name === 'programLanguages') {
                 $is_programLanguages_correctly = true;
 
                 foreach ($_POST[$name] as $language)
@@ -194,11 +195,11 @@ function GetFormSystemMessages (array $error_messages, array $program_ls) : arra
 
                 if (!$is_programLanguages_correctly)
                     $system_messages[$name] = $messages[410];
-            } elseif (strcmp($name, 'bio') == 0) {
+            } elseif ($name === 'bio') {
                 if (strlen($_POST[$name]) > 66560)
                     $system_messages[$name] = $messages[402];
-            } elseif (strcmp($name, 'agreement') == 0) {
-                if (strcmp($_POST[$name], 'on'))
+            } elseif ($name === 'agreement') {
+                if ($_POST[$name] !== 'on')
                     $system_messages[$name] = $messages[410];
             }
         }
@@ -231,7 +232,7 @@ function GetAuthSystemMessage ($error_messages) : string
         return $error_messages['login'][410];
     } elseif (empty($_POST['password'])) {
         return $error_messages['password'][400];
-    } elseif (strcmp(hash('sha512', $_POST['password']), $user_auth_info['user_password']) != 0) {
+    } elseif (!hash_equals(hash('sha512', $_POST['password']), $user_auth_info['user_password'])) {
         return $error_messages['password'][410];
     } else {
         $_SESSION['user_id'] = $user_auth_info['user_id'];
@@ -241,13 +242,13 @@ function GetAuthSystemMessage ($error_messages) : string
 
 function GetPostValue (string $name, string | array | null $value) : string | array | bool | null
 {
-    if (strcmp($name, 'programLanguages') == 0) {
+    if ($name === 'programLanguages') {
         $POST_value = array();
         foreach ($value as $lang)
             $POST_value[] = $lang;
         return json_encode($POST_value);
     } else {
-        return (strcmp($name, 'agreement') != 0) ? $value :
+        return ($name !== 'agreement') ? $value :
             ((array_key_exists('agreement', $_POST)) ? $value : 'off');
     }
 }

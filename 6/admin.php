@@ -15,7 +15,7 @@ if (empty($admin_id)) {
     header('HTTP/1.1 401 Unauthorized');
     header('WWW-Authenticate: Basic realm="My site"');
 
-    print('<h1 style="width: fit-content; margin: 50px auto">401 Требуется авторизация</h1>');
+    echo '<h1 style="width: fit-content; margin: 50px auto">401 Требуется авторизация</h1>';
     exit();
 } elseif (!empty($_SESSION['user_id'])) {
     $page_name = 'admin.php';
@@ -39,7 +39,8 @@ $users_cnt = DBConnect('GetUsersCount');
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="icon" href="<?php print $task_url . '/images/icon.png' ?>" />
+    <link rel="icon" href="<?php echo htmlspecialchars($task_url, ENT_QUOTES, 'UTF-8') .
+        '/images/icon.png' ?>" />
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
           rel="stylesheet"
           integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
@@ -49,16 +50,20 @@ $users_cnt = DBConnect('GetUsersCount');
             integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
             crossorigin="anonymous">
     </script>
-    <link rel="stylesheet" href="<?php print $task_url . '/main_style.css' ?>" />
-    <link rel="stylesheet" href="<?php print $task_url . '/admin_style.css' ?>" />
-    <script defer src="<?php print $task_url . '/admin.js' ?>">
+    <link rel="stylesheet" href="<?php echo htmlspecialchars($task_url, ENT_QUOTES, 'UTF-8') .
+        '/main_style.css' ?>" />
+    <link rel="stylesheet" href="<?php echo htmlspecialchars($task_url, ENT_QUOTES, 'UTF-8') .
+        '/admin_style.css' ?>" />
+    <script defer src="<?php echo htmlspecialchars($task_url, ENT_QUOTES, 'UTF-8') .
+        '/admin.js' ?>">
     </script>
     <title>Задание 6</title>
 </head>
 
 <body>
 <header class="header">
-    <img class="logo" src="<?php print $task_url . '/images/logo.png' ?>" alt="Логотип" />
+    <img class="logo" src="<?php echo htmlspecialchars($task_url, ENT_QUOTES, 'UTF-8') .
+        '/images/logo.png' ?>" alt="Логотип" />
     <h1 class="title">Задание 6</h1>
 </header>
 
@@ -73,13 +78,17 @@ $users_cnt = DBConnect('GetUsersCount');
                 <table class="table table-bordered">
                     <tr>
                         <?php foreach ($statistic as $lang_info): ?>
-                            <th class="align-content-center"> <?php print($lang_info['language_name']) ?> </th>
+                            <th class="align-content-center"> <?php echo htmlspecialchars(
+                                    $lang_info['language_name'], ENT_QUOTES, 'UTF-8'
+                                ) ?> </th>
                         <?php endforeach; ?>
                     </tr>
 
                     <tr>
                         <?php foreach ($statistic as $lang_info): ?>
-                            <th class="align-items-center"> <?php print($lang_info['count_users']) ?> </th>
+                            <th class="align-items-center"> <?php echo htmlspecialchars(
+                                    $lang_info['count_users'], ENT_QUOTES, 'UTF-8'
+                                ) ?> </th>
                         <?php endforeach; ?>
                     </tr>
                 </table>
@@ -89,7 +98,9 @@ $users_cnt = DBConnect('GetUsersCount');
 
     <section class="users-section">
         <div class="cnt-users-block">
-            <h3>Зарегистрировано пользователей: <b><?php print $users_cnt ?></b></h3>
+            <h3>Зарегистрировано пользователей: <b><?php echo htmlspecialchars(
+                    $users_cnt, ENT_QUOTES, 'UTF-8'
+                    ) ?></b></h3>
         </div>
 
         <div class="appearance-management">
@@ -121,8 +132,14 @@ $users_cnt = DBConnect('GetUsersCount');
 
     <section class="log-out-button-section">
         <div class="back-button">
-            <a href="<?php print($task_url . '/welcome.php?back=1') ?>">
-                <b><?php print ('Выйти из аккаунта') ?></b>
+            <a href="<?php echo htmlspecialchars($task_url, ENT_QUOTES, 'UTF-8') .
+                '/welcome.php?back=1' ?>"
+            >
+                <img src="<?php echo htmlspecialchars($task_url, ENT_QUOTES, 'UTF-8') .
+                    '/images/back.svg' ?>"
+                     alt="..."
+                />
+                <b><?php echo 'Выйти из аккаунта' ?></b>
             </a>
         </div>
     </section>

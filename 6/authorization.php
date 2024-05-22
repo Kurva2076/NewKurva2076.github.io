@@ -18,7 +18,7 @@ if (!empty($_SERVER['PHP_AUTH_USER']) or !empty($_SERVER['PHP_AUTH_PW'])) {
                 $_SERVER['REQUEST_URI'], 0, strripos($_SERVER['REQUEST_URI'], '/')
             ) . '/log_out.php?page_name=authorization.php');
     } else {
-        print('<h1 style="width: fit-content; margin: 50px auto">Произошла ошибка маршрутизации</h1>');
+        echo '<h1 style="width: fit-content; margin: 50px auto">Произошла ошибка маршрутизации</h1>' ;
         exit();
     }
 }
@@ -38,7 +38,8 @@ $login_value = (!empty($_COOKIE[session_name()]) and !empty($_SESSION['login']) 
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="icon" href="<?php print $task_url . '/images/icon.png' ?>" />
+    <link rel="icon" href="<?php echo htmlspecialchars($task_url, ENT_QUOTES, 'UTF-8') .
+        '/images/icon.png' ?>" />
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
           rel="stylesheet"
           integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
@@ -48,27 +49,31 @@ $login_value = (!empty($_COOKIE[session_name()]) and !empty($_SESSION['login']) 
             integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
             crossorigin="anonymous">
     </script>
-    <link rel="stylesheet" href="<?php print $task_url . '/main_style.css' ?>" />
-    <link rel="stylesheet" href="<?php print $task_url . '/authorization_style.css' ?>" />
+    <link rel="stylesheet" href="<?php echo htmlspecialchars($task_url, ENT_QUOTES, 'UTF-8') .
+        '/main_style.css' ?>" />
+    <link rel="stylesheet" href="<?php echo htmlspecialchars($task_url, ENT_QUOTES, 'UTF-8') .
+        '/authorization_style.css' ?>" />
     <title>Авторизация</title>
 </head>
 
 <body>
 <header class="header">
-    <img class="logo" src="<?php print $task_url . '/images/logo.png' ?>" alt="Логотип" />
+    <img class="logo" src="<?php echo htmlspecialchars($task_url, ENT_QUOTES, 'UTF-8') .
+        '/images/logo.png' ?>" alt="Логотип" />
     <h1 class="title">Задание 6</h1>
 </header>
 
 <div class="content">
     <div class="authentication-form">
-        <form id="form" action="<?php print $task_url . '/index.php' ?>" method="post">
+        <form id="form" action="<?php echo htmlspecialchars($task_url, ENT_QUOTES, 'UTF-8') .
+            '/index.php' ?>" method="post">
             <div class="login-block">
                 <label>
                     <input type="text"
                            name="login"
                            placeholder="Логин"
                            size="30"
-                           value="<?php print($login_value) ?>"
+                           value="<?php echo htmlspecialchars($login_value, ENT_QUOTES, 'UTF-8') ?>"
                     />
                 </label>
             </div>
@@ -86,7 +91,9 @@ $login_value = (!empty($_COOKIE[session_name()]) and !empty($_SESSION['login']) 
             <?php
 
             if (!empty($message))
-                print('<div class="system-message-block"><p><i>' . $message . '</i></p></div>');
+                echo '<div class="system-message-block"><p><i>' .
+                    htmlspecialchars($message, ENT_QUOTES, 'UTF-8') .
+                    '</i></p></div>';
 
             ?>
 
@@ -96,7 +103,12 @@ $login_value = (!empty($_COOKIE[session_name()]) and !empty($_SESSION['login']) 
         </form>
 
         <div class="back-button">
-            <a href="<?php print $task_url . '/welcome.php?back=1' ?>"><b>Перейти на главную страницу</b></a>
+            <a href="<?php echo htmlspecialchars($task_url, ENT_QUOTES, 'UTF-8') .
+                '/welcome.php?back=1' ?>">
+                <img src="<?php echo htmlspecialchars($task_url, ENT_QUOTES, 'UTF-8') .
+                    '/images/back.svg' ?>"  alt="..." />
+                <b>Перейти на главную страницу</b>
+            </a>
         </div>
     </div>
 </div>

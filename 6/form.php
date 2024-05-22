@@ -21,7 +21,7 @@ if ((!empty($_SERVER['PHP_AUTH_USER']) or !empty($_SERVER['PHP_AUTH_PW'])) and e
                 $_SERVER['REQUEST_URI'], 0, strripos($_SERVER['REQUEST_URI'], '/')
             ) . '/log_out.php?page_name=form.php');
     } else {
-        print('<h1 style="width: fit-content; margin: 50px auto">Произошла ошибка маршрутизации</h1>');
+        echo '<h1 style="width: fit-content; margin: 50px auto">Произошла ошибка маршрутизации</h1>';
     }
     exit();
 } elseif (!empty($_SESSION['admin_id']) and empty($_SESSION['user_id'])) {
@@ -61,7 +61,7 @@ if (!empty($_SESSION['user_id'])) {
     if (empty($_COOKIE['sys_messages']) and empty($_COOKIE['save'])) {
         $user_info = DBConnect('GetUserInfo', user_id: $_SESSION['user_id']);
         if (empty($user_info)) {
-            echo "<script> alert(`Произошла неизвестная ошибка при авторизации.`); </script>";
+            echo "<script> alert('Произошла неизвестная ошибка при авторизации.'); </script>";
             exit();
         }
 
@@ -105,7 +105,8 @@ if (!empty($_COOKIE['sys_messages'])) {
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="icon" href="<?php print $task_url . '/images/icon.png' ?>" />
+    <link rel="icon" href="<?php echo htmlspecialchars($task_url, ENT_QUOTES, 'UTF-8') .
+        '/images/icon.png' ?>" />
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
           rel="stylesheet"
           integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
@@ -115,30 +116,36 @@ if (!empty($_COOKIE['sys_messages'])) {
             integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
             crossorigin="anonymous">
     </script>
-    <link rel="stylesheet" href="<?php print $task_url . '/main_style.css' ?>" />
-    <link rel="stylesheet" href="<?php print $task_url . '/form_style.css' ?>" />
+    <link rel="stylesheet" href="<?php echo htmlspecialchars($task_url, ENT_QUOTES, 'UTF-8') .
+        '/main_style.css' ?>" />
+    <link rel="stylesheet" href="<?php echo htmlspecialchars($task_url, ENT_QUOTES, 'UTF-8') .
+        '/form_style.css' ?>" />
     <title>Форма</title>
 </head>
 
 <body>
 <header class="header">
-    <img class="logo" src="<?php print $task_url . '/images/logo.png' ?>" alt="Логотип" />
+    <img class="logo" src="<?php echo htmlspecialchars($task_url, ENT_QUOTES, 'UTF-8') .
+        '/images/logo.png' ?>" alt="Логотип" />
     <h1 class="title">Задание 6</h1>
 </header>
 
 <div class="content">
-    <div id="application-form" <?php if (!empty($errors)) print("style='grid-template-columns: 1fr 1fr'"); ?> >
-        <form id="form" action="<?php print $task_url . '/index.php' ?>" method="post">
+    <div id="application-form" <?php if (!empty($errors)) echo "style='grid-template-columns: 1fr 1fr'"; ?> >
+        <form id="form" action="<?php echo htmlspecialchars($task_url, ENT_QUOTES, 'UTF-8') .
+            '/index.php' ?>" method="post">
             <div class="form-block-element system-message">
                 <?php
 
                 if (empty($_SESSION['admin_id'])) {
                     if (!empty($_SESSION['user_id'])) {
-                        print('<p style="color: #221257">Вход с логином ' . $_SESSION['login'] .
-                            ', id ' . $_SESSION['user_id'] . '</p>');
+                        echo '<p style="color: #221257">Вход с логином ' .
+                            htmlspecialchars($_SESSION['login'], ENT_QUOTES, 'UTF-8') . ', id ' .
+                            htmlspecialchars($_SESSION['user_id'], ENT_QUOTES, 'UTF-8') . '</p>';
                     } elseif (!empty($_SESSION['password']) and !empty($messages[0])) {
-                        print('<p style="color: #221257">Для редактирования формы воспользуйтесь логином - '
-                            . $_SESSION['login'] . ', паролем - ' . $_SESSION['password'] . '</p>');
+                        echo '<p style="color: #221257">Для редактирования формы воспользуйтесь логином - ' .
+                            htmlspecialchars($_SESSION['login'], ENT_QUOTES, 'UTF-8') . ', паролем - ' .
+                            htmlspecialchars($_SESSION['password'], ENT_QUOTES, 'UTF-8') . '</p>';
 
                         setcookie(session_name(), '', time() - 3600, '/');
                         session_unset();
@@ -157,13 +164,15 @@ if (!empty($_COOKIE['sys_messages'])) {
                     </label>
 
                     <div class="form-element">
-                        <input <?php if (in_array('userID', $errors, true)) print('class="error"')?>
+                        <input <?php if (in_array('userID', $errors, true)) echo 'class="error"' ?>
                                 id="userID"
                                 name="userID"
                                 type="text"
                                 placeholder="Введите ID пользователя"
                                 size="30"
-                                value="<?php print($values['userID']); ?>"
+                                value="<?php echo htmlspecialchars(
+                                        $values['userID'], ENT_QUOTES, 'UTF-8'
+                                ); ?>"
                         />
                     </div>
                 </div>
@@ -176,13 +185,15 @@ if (!empty($_COOKIE['sys_messages'])) {
                 </label>
 
                 <div class="form-element">
-                    <input <?php if (in_array('fullName', $errors, true)) print('class="error"')?>
+                    <input <?php if (in_array('fullName', $errors, true)) echo 'class="error"' ?>
                            id="fullName"
                            name="fullName"
                            type="text"
                            placeholder="Введите ФИО"
                            size="30"
-                           value="<?php print($values['fullName']); ?>"
+                           value="<?php echo htmlspecialchars(
+                               $values['fullName'], ENT_QUOTES, 'UTF-8'
+                           ); ?>"
                     />
                 </div>
             </div>
@@ -193,13 +204,15 @@ if (!empty($_COOKIE['sys_messages'])) {
                 </label>
 
                 <div class="form-element">
-                    <input <?php if (in_array('phoneNumber', $errors, true)) print('class="error"')?>
+                    <input <?php if (in_array('phoneNumber', $errors, true)) echo 'class="error"' ?>
                            id="phoneNumber"
                            name="phoneNumber"
                            type="tel"
                            placeholder="Введите номер телефона"
                            size="30"
-                           value="<?php print($values['phoneNumber']); ?>"
+                           value="<?php echo htmlspecialchars(
+                               $values['phoneNumber'], ENT_QUOTES, 'UTF-8'
+                           ); ?>"
                     />
                 </div>
             </div>
@@ -210,13 +223,15 @@ if (!empty($_COOKIE['sys_messages'])) {
                 </label>
 
                 <div class="form-element">
-                    <input <?php if (in_array('email', $errors, true)) print('class="error"')?>
+                    <input <?php if (in_array('email', $errors, true)) echo 'class="error"' ?>
                            id="email"
                            name="email"
                            type="text"
                            placeholder="Введите e-mail"
                            size="30"
-                           value="<?php print($values['email']); ?>"
+                           value="<?php echo htmlspecialchars(
+                               $values['email'], ENT_QUOTES, 'UTF-8'
+                           ); ?>"
                     />
                 </div>
             </div>
@@ -227,13 +242,15 @@ if (!empty($_COOKIE['sys_messages'])) {
                 </label>
 
                 <div class="form-element">
-                    <input <?php if (in_array('birth', $errors, true)) print('class="error"')?>
+                    <input <?php if (in_array('birth', $errors, true)) echo 'class="error"' ?>
                            id="birth"
                            name="birth"
                            type="text"
                            size="10"
                            placeholder="дд.мм.гггг"
-                           value="<?php print($values['birth']); ?>"
+                           value="<?php echo htmlspecialchars(
+                               $values['birth'], ENT_QUOTES, 'UTF-8'
+                           ); ?>"
                     />
                 </div>
             </div>
@@ -243,7 +260,7 @@ if (!empty($_COOKIE['sys_messages'])) {
 
                 <div class="form-element">
                     <div>
-                        <input <?php if (in_array('sex', $errors, true)) print('class="error"')?>
+                        <input <?php if (in_array('sex', $errors, true)) echo 'class="error"' ?>
                                 id="male"
                                 type="radio"
                                 name="sex"
@@ -251,12 +268,12 @@ if (!empty($_COOKIE['sys_messages'])) {
                                 <?php
 
                                 if ($values['sex'] === 'M')
-                                    print('checked');
+                                    echo 'checked';
 
                                 ?>
                         />
                         <label class="form-text" for="male">М</label>
-                        <input <?php if (in_array('sex', $errors, true)) print('class="error"')?>
+                        <input <?php if (in_array('sex', $errors, true)) echo 'class="error"' ?>
                                 id="female"
                                 type="radio"
                                 name="sex"
@@ -264,7 +281,7 @@ if (!empty($_COOKIE['sys_messages'])) {
                                 <?php
 
                                 if ($values['sex'] === 'F')
-                                    print('checked');
+                                    echo 'checked';
 
                                 ?>
                         />
@@ -279,7 +296,7 @@ if (!empty($_COOKIE['sys_messages'])) {
                 </label>
 
                 <div class="form-element">
-                    <select <?php if (in_array('programLanguages', $errors, true)) print('class="error"')?>
+                    <select <?php if (in_array('programLanguages', $errors, true)) echo 'class="error"' ?>
                             id="programLanguages"
                             name="programLanguages[]"
                             size="5"
@@ -288,13 +305,14 @@ if (!empty($_COOKIE['sys_messages'])) {
                         <?php
 
                         foreach ($program_ls as $program_l) {
-                            echo '<option value="' . $program_l . '"';
+                            echo '<option value="' . htmlspecialchars($program_l, ENT_QUOTES, 'UTF-8') .
+                                '"';
                             if (in_array($program_l, $values['programLanguages'])) {
-                                print(' selected');
+                                echo ' selected';
                             }
                             echo '>';
 
-                            echo htmlspecialchars($program_l);
+                            echo htmlspecialchars($program_l, ENT_QUOTES, 'UTF-8');
 
                             echo '</option>';
                         }
@@ -310,38 +328,41 @@ if (!empty($_COOKIE['sys_messages'])) {
                 </label>
 
                 <div class="form-element">
-                    <textarea class="textarea <?php if (in_array('bio', $errors, true)) print('error'); ?>"
+                    <textarea class="textarea <?php if (in_array('bio', $errors, true)) echo 'error' ?>"
                               id="bio"
                               name="bio"
-                              placeholder=""
-                    ><?php print($values['bio']); ?></textarea>
+                              placeholder="Введите биографию"
+                    ><?php echo htmlspecialchars($values['bio'], ENT_COMPAT, 'UTF-8') ?></textarea>
                 </div>
             </div>
 
-            <div class="form-block-element">
-                <div class="checkFormElement">
-                    <label>
-                        <input <?php if (in_array('agreement', $errors, true)) print('class="error"')?>
-                                type="checkbox"
-                                name="agreement"
-                                <?php
+            <?php if (empty($_SESSION['admin_id'])): ?>
+                <div class="form-block-element">
+                    <div class="checkFormElement">
+                        <label>
+                            <input <?php if (in_array('agreement', $errors, true)) echo 'class="error"' ?>
+                                    type="checkbox"
+                                    name="agreement"
+                                    <?php
 
-                                if ($values['agreement'] === 'on')
-                                    print('checked');
+                                    if ($values['agreement'] === 'on')
+                                        echo 'checked';
 
-                                ?>
-                        />
-                        <b class="form-text agreement">С контрактом ознакомлен(а)</b>
-                    </label>
+                                    ?>
+                            />
+                            <b class="form-text agreement">С контрактом ознакомлен(а)</b>
+                        </label>
+                    </div>
                 </div>
-            </div>
+            <?php endif; ?>
 
             <div class="form-block-element send-button">
                 <p><input class="rerouteButton" type="submit" name="rerouteButton" value="Сохранить"></p>
                 <?php
 
                 if (empty($errors) and !empty($messages[0]))
-                    print('<p style="color: #221257; padding: 14px 0 0 25px;">' . $messages[0] . '</p>');
+                    echo '<p style="color: #221257; padding: 14px 0 0 25px;">' .
+                        htmlspecialchars($messages[0], ENT_QUOTES, 'UTF-8') . '</p>';
 
                 ?>
             </div>
@@ -350,34 +371,37 @@ if (!empty($_COOKIE['sys_messages'])) {
         <?php
 
         if (!empty($errors)) {
-            print('<div class="messages" style="height: ' .
-                ((empty($_SESSION['user_id'])) ? 540 : ((!empty($_SESSION['admin_id'])) ? 580 : 500)) . 'px;">');
+            $height = empty($_SESSION['user_id']) ? 540 : (!empty($_SESSION['admin_id']) ? 580 : 500);
+            echo '<div class="messages" style="height: ' . $height . 'px;">';
 
             foreach ($values as $name => $value) {
-                $style = ($name === 'bio') ? 'height: 97px;' :
-                    (($name === 'programLanguages') ? 'height: 102px;' : '');
+                $height = $name === 'bio' ? 97 : ($name === 'programLanguages' ? 102 : '');
                 $error_message = '';
                 if (array_key_exists($name, $messages))
                     $error_message = $messages[$name];
 
-                print('<div class="message ' . $name . '" style="' . $style .
-                    ((!empty($error_message)) ? '"' : ' visibility: hidden;"') . '>' .
-                    htmlspecialchars($error_message) . '</div>');
+                echo '<div class="message ' . $name . '" style="height: ' .
+                    htmlspecialchars($height, ENT_QUOTES, 'UTF-8') . 'px;' .
+                    (!empty($error_message) ? '"' : ' visibility: hidden;"') . '>' .
+                    htmlspecialchars($error_message, ENT_QUOTES, 'UTF-8') . '</div>';
             }
 
-            print('</div>');
+            echo '</div>';
         }
 
         ?>
 
         <div class="back-button">
-            <a href="<?php print $task_url . (
+            <a href="<?php echo htmlspecialchars($task_url, ENT_QUOTES, 'UTF-8') . (
                     (!empty($_SESSION['admin_id'])) ? '/admin.php' : (
                     (!empty($_SESSION['user_id'])) ? '/authorization.php' : '/welcome.php'
                     )) . '?back=1' ?>"
             >
+                <img src="<?php echo htmlspecialchars($task_url, ENT_QUOTES, 'UTF-8') .
+                    '/images/back.svg' ?>"  alt="..." />
+
                 <b>
-                    <?php print (
+                    <?php echo (
                     (!empty($_SESSION['admin_id'])) ? 'Вернуться на страницу админа' : (
                     (!empty($_SESSION['user_id'])) ? 'Выйти из аккаунта' : 'Перейти на главную страницу'
                     )) ?>

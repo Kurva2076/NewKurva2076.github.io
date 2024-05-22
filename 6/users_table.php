@@ -47,15 +47,16 @@ $task_url = substr($task_url, 0, strripos($task_url, '/'));
 
                         if ($name === 'program_languages') {
                             foreach ($value as $lang) {
-                                print $lang . '<br>';
+                                print htmlspecialchars($lang, ENT_QUOTES, 'UTF-8') . '<br>';
                             }
                         } elseif ($name === 'full_name' or $name === 'bio') {
                             $value_elems = explode(' ', $value);
                             for ($j = 0; $j < sizeof($value_elems); $j++) {
-                                print $value_elems[$j] . (($j == sizeof($value_elems) - 1) ? '' : '<br>');
+                                print htmlspecialchars($value_elems[$j], ENT_QUOTES, 'UTF-8') .
+                                    (($j == sizeof($value_elems) - 1) ? '' : '<br>');
                             }
                         } else {
-                            print $value;
+                            print htmlspecialchars($value, ENT_QUOTES, 'UTF-8');
                         }
 
                         print('</th>');
@@ -66,12 +67,17 @@ $task_url = substr($task_url, 0, strripos($task_url, '/'));
 
                 <th class="delete-cell">
                     <div class="delete-button">
-                        <a href="admin.php?delete=<?php print $users_info[$i]['user_id'] ?>">Удалить</a>
+                        <a href="admin.php?delete=<?php print
+                            htmlspecialchars($users_info[$i]['user_id'], ENT_QUOTES, 'UTF-8')
+                        ?>">Удалить</a>
                     </div>
                 </th>
                 <th class="edit-cell">
                     <div class="edit-button">
-                        <a href="<?php print $task_url . '/form.php?admins_edit=' . $users_info[$i]['user_id'] ?>">
+                        <a href="<?php print
+                            htmlspecialchars($task_url, ENT_QUOTES, 'UTF-8') .
+                            '/form.php?admins_edit=' . $users_info[$i]['user_id']
+                        ?>">
                             Редактировать
                         </a>
                     </div>
